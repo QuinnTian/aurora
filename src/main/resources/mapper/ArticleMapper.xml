@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quinntian.aurora.site.mapper.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.quinntian.aurora.site.model.Article">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
+    <result column="article_content_type" jdbcType="INTEGER" property="articleContentType" />
+    <result column="article_post_date" jdbcType="TIMESTAMP" property="articlePostDate" />
+    <result column="article_save_date" jdbcType="TIMESTAMP" property="articleSaveDate" />
+    <result column="article_status" jdbcType="INTEGER" property="articleStatus" />
+    <result column="article_url" jdbcType="VARCHAR" property="articleUrl" />
+    <result column="article_thumbnail" jdbcType="VARCHAR" property="articleThumbnail" />
+    <result column="article_summary" jdbcType="VARCHAR" property="articleSummary" />
+    <result column="article_site_id" jdbcType="BIGINT" property="articleSiteId" />
+
+  </resultMap>
+  <!--容量较大字段-->
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.quinntian.aurora.site.model.Article">
+    <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
+    <result column="article_content_md" jdbcType="LONGVARCHAR" property="articleContentMd" />
+  </resultMap>
+  <!--带标签和分类的集合-->
+  <resultMap id="ArticleAndTagAndCate" type="com.quinntian.aurora.site.model.Article" extends="BaseResultMap">
+    <collection property="tags" fetchType="eager" column="artId=id"
+                select="com.quinntian.aurora.site.mapper.TagMapper.selectByTagId"></collection>
+    <collection property="categories"  fetchType="eager" column="artId=id"
+                select="com.quinntian.aurora.site.mapper.CategoryMapper.selectByArticleId"></collection>
+  </resultMap>
+  <resultMap id="ArticleAndTagAndCateBlob" type="com.quinntian.aurora.site.model.Article" extends="ResultMapWithBLOBs">
+    <collection property="tags" fetchType="eager" column="artId=id"
+                select="com.quinntian.aurora.site.mapper.TagMapper.selectByTagId"></collection>
+    <collection property="categories"  fetchType="eager" column="artId=id"
+                select="com.quinntian.aurora.site.mapper.CategoryMapper.selectByArticleId"></collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    a.id, a.article_title, a.article_content_type, a.article_post_date,
+    a.article_save_date, a.article_status,
+    a.article_url, a.article_thumbnail, a.article_summary, a.article_site_id
+  </sql>
+  <sql id="Blob_Column_List">
+    a.article_content, a.article_content_md
+  </sql>
+  <!--根据标签ID查询级联表中的文章-->
+  <select id="selectIdByTagId" resultType="Long">
+    select article_id
+    from aurora_article_tag where tag_id = #{tagId}
+  </select>
+  <!--根据分类ID查询级联表中的文章ID-->
+  <select id="selectIdByCateId" resultType="Long">
+    select article_id
+    from aurora_article_category where category_id = #{cateId}
+  </select>
+  <!--根据URL查询文章-->
+  <select id="selectWithTagAndCateByUrl" resultMap="ArticleAndTagAndCateBlob" >
+    select
+    <include refid="Base_Column_List"/>,
+    <include refid="Blob_Column_List"/>
+    from aurora_article a
+    where a.article_url = #{articleUrl}
+  </select>
+  <!--根据站点ID查询全部文章,分步级联查询其标签和分类-->
+  <select id="selectWithTagAndCateBySiteId" resultMap="ArticleAndTagAndCate">
+    select
+    <include refid="Base_Column_List"></include>
+    from aurora_article a
+    where a.article_site_id=#{siteId}
+  </select>
+  <!--根据站点ID查询全部文章success-->
+  <select id="selectBySiteId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from aurora_article a
+    where a.article_site_id = #{siteId}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from aurora_article a
+    where a.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from aurora_article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.quinntian.aurora.site.model.Article">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_article (article_title, article_content_type, 
+      article_post_date, article_save_date, article_status, 
+      article_url, article_thumbnail, article_summary, 
+      article_site_id, article_content, article_content_md
+      )
+    values (#{articleTitle,jdbcType=VARCHAR}, #{articleContentType,jdbcType=INTEGER}, 
+      #{articlePostDate,jdbcType=TIMESTAMP}, #{articleSaveDate,jdbcType=TIMESTAMP}, #{articleStatus,jdbcType=INTEGER}, 
+      #{articleUrl,jdbcType=VARCHAR}, #{articleThumbnail,jdbcType=VARCHAR}, #{articleSummary,jdbcType=VARCHAR}, 
+      #{articleSiteId,jdbcType=BIGINT}, #{articleContent,jdbcType=LONGVARCHAR}, #{articleContentMd,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.quinntian.aurora.site.model.Article">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleTitle != null">
+        article_title,
+      </if>
+      <if test="articleContentType != null">
+        article_content_type,
+      </if>
+      <if test="articlePostDate != null">
+        article_post_date,
+      </if>
+      <if test="articleSaveDate != null">
+        article_save_date,
+      </if>
+      <if test="articleStatus != null">
+        article_status,
+      </if>
+      <if test="articleUrl != null">
+        article_url,
+      </if>
+      <if test="articleThumbnail != null">
+        article_thumbnail,
+      </if>
+      <if test="articleSummary != null">
+        article_summary,
+      </if>
+      <if test="articleSiteId != null">
+        article_site_id,
+      </if>
+      <if test="articleContent != null">
+        article_content,
+      </if>
+      <if test="articleContentMd != null">
+        article_content_md,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleTitle != null">
+        #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContentType != null">
+        #{articleContentType,jdbcType=INTEGER},
+      </if>
+      <if test="articlePostDate != null">
+        #{articlePostDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleSaveDate != null">
+        #{articleSaveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleStatus != null">
+        #{articleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="articleUrl != null">
+        #{articleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="articleThumbnail != null">
+        #{articleThumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="articleSummary != null">
+        #{articleSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="articleSiteId != null">
+        #{articleSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="articleContent != null">
+        #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="articleContentMd != null">
+        #{articleContentMd,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quinntian.aurora.site.model.Article">
+    update aurora_article
+    <set>
+      <if test="articleTitle != null">
+        article_title = #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContentType != null">
+        article_content_type = #{articleContentType,jdbcType=INTEGER},
+      </if>
+      <if test="articlePostDate != null">
+        article_post_date = #{articlePostDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleSaveDate != null">
+        article_save_date = #{articleSaveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleStatus != null">
+        article_status = #{articleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="articleUrl != null">
+        article_url = #{articleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="articleThumbnail != null">
+        article_thumbnail = #{articleThumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="articleSummary != null">
+        article_summary = #{articleSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="articleSiteId != null">
+        article_site_id = #{articleSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="articleContent != null">
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="articleContentMd != null">
+        article_content_md = #{articleContentMd,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.quinntian.aurora.site.model.Article">
+    update aurora_article
+    set article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_content_type = #{articleContentType,jdbcType=INTEGER},
+      article_post_date = #{articlePostDate,jdbcType=TIMESTAMP},
+      article_save_date = #{articleSaveDate,jdbcType=TIMESTAMP},
+      article_status = #{articleStatus,jdbcType=INTEGER},
+      article_url = #{articleUrl,jdbcType=VARCHAR},
+      article_thumbnail = #{articleThumbnail,jdbcType=VARCHAR},
+      article_summary = #{articleSummary,jdbcType=VARCHAR},
+      article_site_id = #{articleSiteId,jdbcType=BIGINT},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      article_content_md = #{articleContentMd,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quinntian.aurora.site.model.Article">
+    update aurora_article
+    set article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_content_type = #{articleContentType,jdbcType=INTEGER},
+      article_post_date = #{articlePostDate,jdbcType=TIMESTAMP},
+      article_save_date = #{articleSaveDate,jdbcType=TIMESTAMP},
+      article_status = #{articleStatus,jdbcType=INTEGER},
+      article_url = #{articleUrl,jdbcType=VARCHAR},
+      article_thumbnail = #{articleThumbnail,jdbcType=VARCHAR},
+      article_summary = #{articleSummary,jdbcType=VARCHAR},
+      article_site_id = #{articleSiteId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

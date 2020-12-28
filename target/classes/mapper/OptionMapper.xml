@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quinntian.aurora.site.mapper.OptionMapper">
+  <resultMap id="BaseResultMap" type="com.quinntian.aurora.site.model.Option">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="option_name" jdbcType="VARCHAR" property="optionName" />
+    <result column="option_value" jdbcType="VARCHAR" property="optionValue" />
+    <result column="option_site_id" jdbcType="BIGINT" property="optionSiteId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, option_name, option_value, option_site_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aurora_option
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from aurora_option
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.quinntian.aurora.site.model.Option">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_option (option_name, option_value, option_site_id
+      )
+    values (#{optionName,jdbcType=VARCHAR}, #{optionValue,jdbcType=VARCHAR}, #{optionSiteId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.quinntian.aurora.site.model.Option">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_option
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="optionName != null">
+        option_name,
+      </if>
+      <if test="optionValue != null">
+        option_value,
+      </if>
+      <if test="optionSiteId != null">
+        option_site_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="optionName != null">
+        #{optionName,jdbcType=VARCHAR},
+      </if>
+      <if test="optionValue != null">
+        #{optionValue,jdbcType=VARCHAR},
+      </if>
+      <if test="optionSiteId != null">
+        #{optionSiteId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quinntian.aurora.site.model.Option">
+    update aurora_option
+    <set>
+      <if test="optionName != null">
+        option_name = #{optionName,jdbcType=VARCHAR},
+      </if>
+      <if test="optionValue != null">
+        option_value = #{optionValue,jdbcType=VARCHAR},
+      </if>
+      <if test="optionSiteId != null">
+        option_site_id = #{optionSiteId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quinntian.aurora.site.model.Option">
+    update aurora_option
+    set option_name = #{optionName,jdbcType=VARCHAR},
+      option_value = #{optionValue,jdbcType=VARCHAR},
+      option_site_id = #{optionSiteId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

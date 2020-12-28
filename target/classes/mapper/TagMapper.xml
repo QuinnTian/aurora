@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quinntian.aurora.site.mapper.TagMapper">
+  <resultMap id="BaseResultMap" type="com.quinntian.aurora.site.model.Tag">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+    <result column="tag_url" jdbcType="VARCHAR" property="tagUrl" />
+    <result column="tag_desc" jdbcType="VARCHAR" property="tagDesc" />
+    <result column="tag_site_id" jdbcType="BIGINT" property="tagSiteId"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    t.id, t.tag_name, t.tag_url, t.tag_desc,tag_site_id
+  </sql>
+  <!---->
+  <!--插入文章-标签级联表-->
+  <insert id="insertArticleRelTag">
+    insert aurora_article_tag(tag_id,article_id) VALUES(#{tagId},#{articleId})
+  </insert>
+  <!--根据标签名和站点名插入-->
+  <select id="selectByTagNameAndSiteId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from aurora_tag t
+    where tag_site_id = #{siteId} and tag_name=#{tagName}
+  </select>
+  <!--根据文章ID查询所有分类 连表：article_tag <-> tag-->
+  <select id="selectByTagId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from aurora_tag t
+    inner join aurora_article_tag att on att.tag_id = t.id
+    where att.article_id = #{artId}
+  </select>
+  <!--根据siteId查询-->
+  <select id="selectBySiteId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from aurora_tag t
+    where tag_site_id = #{siteId}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aurora_tag t
+    where t.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from aurora_tag
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.quinntian.aurora.site.model.Tag">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_tag (tag_name, tag_url, tag_desc
+      )
+    values (#{tagName,jdbcType=VARCHAR}, #{tagUrl,jdbcType=VARCHAR}, #{tagDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.quinntian.aurora.site.model.Tag">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_tag
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tagName != null">
+        tag_name,
+      </if>
+      <if test="tagUrl != null">
+        tag_url,
+      </if>
+      <if test="tagDesc != null">
+        tag_desc,
+      </if>
+      <if test="tagSiteId != null">
+        tag_site_id
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tagName != null">
+        #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagUrl != null">
+        #{tagUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tagDesc != null">
+        #{tagDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tagSiteId != null">
+        #{tagSiteId},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quinntian.aurora.site.model.Tag">
+    update aurora_tag
+    <set>
+      <if test="tagName != null">
+        tag_name = #{tagName,jdbcType=VARCHAR},
+      </if>
+      <if test="tagUrl != null">
+        tag_url = #{tagUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tagDesc != null">
+        tag_desc = #{tagDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quinntian.aurora.site.model.Tag">
+    update aurora_tag
+    set tag_name = #{tagName,jdbcType=VARCHAR},
+      tag_url = #{tagUrl,jdbcType=VARCHAR},
+      tag_desc = #{tagDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

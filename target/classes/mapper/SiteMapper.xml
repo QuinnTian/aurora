@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quinntian.aurora.site.mapper.SiteMapper">
+  <resultMap id="BaseResultMap" type="com.quinntian.aurora.site.model.Site">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="site_title" jdbcType="VARCHAR" property="siteTitle" />
+    <result column="site_ip" jdbcType="VARCHAR" property="siteIp" />
+    <result column="site_url" jdbcType="VARCHAR" property="siteUrl" />
+    <result column="site_init_date" jdbcType="TIMESTAMP" property="siteInitDate" />
+    <result column="site_rel_url" jdbcType="VARCHAR" property="siteRelUrl" />
+    <result column="site_theme_name" jdbcType="VARCHAR" property="siteThemeName" />
+    <result column="site_page_size" jdbcType="INTEGER" property="sitePageSize" />
+    <result column="site_logo_url" jdbcType="VARCHAR" property="siteLogoUrl" />
+    <result column="site_favicon_url" jdbcType="VARCHAR" property="siteFaviconUrl" />
+    <result column="site_seo_keyword" jdbcType="VARCHAR" property="siteSeoKeyword" />
+    <result column="site_seo_desc" jdbcType="VARCHAR" property="siteSeoDesc" />
+    <result column="site_baidu_token" jdbcType="VARCHAR" property="siteBaiduToken" />
+    <result column="site_google_verification" jdbcType="VARCHAR" property="siteGoogleVerification" />
+    <result column="site_bing_verification" jdbcType="VARCHAR" property="siteBingVerification" />
+    <result column="site_baidu_verfication" jdbcType="VARCHAR" property="siteBaiduVerfication" />
+    <result column="site_qihu_verfication" jdbcType="VARCHAR" property="siteQihuVerfication" />
+    <result column="site_editor" jdbcType="VARCHAR" property="siteEditor" />
+    <result column="site_attach_uptype" jdbcType="INTEGER" property="siteAttachUptype" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, site_title, site_ip, site_url, site_init_date, site_rel_url, site_theme_name, 
+    site_page_size, site_logo_url, site_favicon_url, site_seo_keyword, site_seo_desc, 
+    site_baidu_token, site_google_verification, site_bing_verification, site_baidu_verfication, 
+    site_qihu_verfication, site_editor, site_attach_uptype
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aurora_site
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from aurora_site
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.quinntian.aurora.site.model.Site">
+    insert into aurora_site (id, site_title, site_ip, 
+      site_url, site_init_date, site_rel_url, 
+      site_theme_name, site_page_size, site_logo_url, 
+      site_favicon_url, site_seo_keyword, site_seo_desc, 
+      site_baidu_token, site_google_verification, 
+      site_bing_verification, site_baidu_verfication, 
+      site_qihu_verfication, site_editor, site_attach_uptype
+      )
+    values (#{id,jdbcType=BIGINT}, #{siteTitle,jdbcType=VARCHAR}, #{siteIp,jdbcType=VARCHAR}, 
+      #{siteUrl,jdbcType=VARCHAR}, #{siteInitDate,jdbcType=TIMESTAMP}, #{siteRelUrl,jdbcType=VARCHAR}, 
+      #{siteThemeName,jdbcType=VARCHAR}, #{sitePageSize,jdbcType=INTEGER}, #{siteLogoUrl,jdbcType=VARCHAR}, 
+      #{siteFaviconUrl,jdbcType=VARCHAR}, #{siteSeoKeyword,jdbcType=VARCHAR}, #{siteSeoDesc,jdbcType=VARCHAR}, 
+      #{siteBaiduToken,jdbcType=VARCHAR}, #{siteGoogleVerification,jdbcType=VARCHAR}, 
+      #{siteBingVerification,jdbcType=VARCHAR}, #{siteBaiduVerfication,jdbcType=VARCHAR}, 
+      #{siteQihuVerfication,jdbcType=VARCHAR}, #{siteEditor,jdbcType=VARCHAR}, #{siteAttachUptype,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.quinntian.aurora.site.model.Site">
+    insert into aurora_site
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="siteTitle != null">
+        site_title,
+      </if>
+      <if test="siteIp != null">
+        site_ip,
+      </if>
+      <if test="siteUrl != null">
+        site_url,
+      </if>
+      <if test="siteInitDate != null">
+        site_init_date,
+      </if>
+      <if test="siteRelUrl != null">
+        site_rel_url,
+      </if>
+      <if test="siteThemeName != null">
+        site_theme_name,
+      </if>
+      <if test="sitePageSize != null">
+        site_page_size,
+      </if>
+      <if test="siteLogoUrl != null">
+        site_logo_url,
+      </if>
+      <if test="siteFaviconUrl != null">
+        site_favicon_url,
+      </if>
+      <if test="siteSeoKeyword != null">
+        site_seo_keyword,
+      </if>
+      <if test="siteSeoDesc != null">
+        site_seo_desc,
+      </if>
+      <if test="siteBaiduToken != null">
+        site_baidu_token,
+      </if>
+      <if test="siteGoogleVerification != null">
+        site_google_verification,
+      </if>
+      <if test="siteBingVerification != null">
+        site_bing_verification,
+      </if>
+      <if test="siteBaiduVerfication != null">
+        site_baidu_verfication,
+      </if>
+      <if test="siteQihuVerfication != null">
+        site_qihu_verfication,
+      </if>
+      <if test="siteEditor != null">
+        site_editor,
+      </if>
+      <if test="siteAttachUptype != null">
+        site_attach_uptype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="siteTitle != null">
+        #{siteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="siteIp != null">
+        #{siteIp,jdbcType=VARCHAR},
+      </if>
+      <if test="siteUrl != null">
+        #{siteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteInitDate != null">
+        #{siteInitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="siteRelUrl != null">
+        #{siteRelUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteThemeName != null">
+        #{siteThemeName,jdbcType=VARCHAR},
+      </if>
+      <if test="sitePageSize != null">
+        #{sitePageSize,jdbcType=INTEGER},
+      </if>
+      <if test="siteLogoUrl != null">
+        #{siteLogoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteFaviconUrl != null">
+        #{siteFaviconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteSeoKeyword != null">
+        #{siteSeoKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="siteSeoDesc != null">
+        #{siteSeoDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="siteBaiduToken != null">
+        #{siteBaiduToken,jdbcType=VARCHAR},
+      </if>
+      <if test="siteGoogleVerification != null">
+        #{siteGoogleVerification,jdbcType=VARCHAR},
+      </if>
+      <if test="siteBingVerification != null">
+        #{siteBingVerification,jdbcType=VARCHAR},
+      </if>
+      <if test="siteBaiduVerfication != null">
+        #{siteBaiduVerfication,jdbcType=VARCHAR},
+      </if>
+      <if test="siteQihuVerfication != null">
+        #{siteQihuVerfication,jdbcType=VARCHAR},
+      </if>
+      <if test="siteEditor != null">
+        #{siteEditor,jdbcType=VARCHAR},
+      </if>
+      <if test="siteAttachUptype != null">
+        #{siteAttachUptype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quinntian.aurora.site.model.Site">
+    update aurora_site
+    <set>
+      <if test="siteTitle != null">
+        site_title = #{siteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="siteIp != null">
+        site_ip = #{siteIp,jdbcType=VARCHAR},
+      </if>
+      <if test="siteUrl != null">
+        site_url = #{siteUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteInitDate != null">
+        site_init_date = #{siteInitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="siteRelUrl != null">
+        site_rel_url = #{siteRelUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteThemeName != null">
+        site_theme_name = #{siteThemeName,jdbcType=VARCHAR},
+      </if>
+      <if test="sitePageSize != null">
+        site_page_size = #{sitePageSize,jdbcType=INTEGER},
+      </if>
+      <if test="siteLogoUrl != null">
+        site_logo_url = #{siteLogoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteFaviconUrl != null">
+        site_favicon_url = #{siteFaviconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="siteSeoKeyword != null">
+        site_seo_keyword = #{siteSeoKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="siteSeoDesc != null">
+        site_seo_desc = #{siteSeoDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="siteBaiduToken != null">
+        site_baidu_token = #{siteBaiduToken,jdbcType=VARCHAR},
+      </if>
+      <if test="siteGoogleVerification != null">
+        site_google_verification = #{siteGoogleVerification,jdbcType=VARCHAR},
+      </if>
+      <if test="siteBingVerification != null">
+        site_bing_verification = #{siteBingVerification,jdbcType=VARCHAR},
+      </if>
+      <if test="siteBaiduVerfication != null">
+        site_baidu_verfication = #{siteBaiduVerfication,jdbcType=VARCHAR},
+      </if>
+      <if test="siteQihuVerfication != null">
+        site_qihu_verfication = #{siteQihuVerfication,jdbcType=VARCHAR},
+      </if>
+      <if test="siteEditor != null">
+        site_editor = #{siteEditor,jdbcType=VARCHAR},
+      </if>
+      <if test="siteAttachUptype != null">
+        site_attach_uptype = #{siteAttachUptype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quinntian.aurora.site.model.Site">
+    update aurora_site
+    set site_title = #{siteTitle,jdbcType=VARCHAR},
+      site_ip = #{siteIp,jdbcType=VARCHAR},
+      site_url = #{siteUrl,jdbcType=VARCHAR},
+      site_init_date = #{siteInitDate,jdbcType=TIMESTAMP},
+      site_rel_url = #{siteRelUrl,jdbcType=VARCHAR},
+      site_theme_name = #{siteThemeName,jdbcType=VARCHAR},
+      site_page_size = #{sitePageSize,jdbcType=INTEGER},
+      site_logo_url = #{siteLogoUrl,jdbcType=VARCHAR},
+      site_favicon_url = #{siteFaviconUrl,jdbcType=VARCHAR},
+      site_seo_keyword = #{siteSeoKeyword,jdbcType=VARCHAR},
+      site_seo_desc = #{siteSeoDesc,jdbcType=VARCHAR},
+      site_baidu_token = #{siteBaiduToken,jdbcType=VARCHAR},
+      site_google_verification = #{siteGoogleVerification,jdbcType=VARCHAR},
+      site_bing_verification = #{siteBingVerification,jdbcType=VARCHAR},
+      site_baidu_verfication = #{siteBaiduVerfication,jdbcType=VARCHAR},
+      site_qihu_verfication = #{siteQihuVerfication,jdbcType=VARCHAR},
+      site_editor = #{siteEditor,jdbcType=VARCHAR},
+      site_attach_uptype = #{siteAttachUptype,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- 配置生成器
+参考官方文档：http://mybatis.org/generator/configreference/
+以下为基础模板，不全参照官方文档添加或者注释掉
+-->
+<generatorConfiguration>
+    <!--以下到targetruntime忽略-->
+    <!--执行generator插件生成文件的命令： call mvn mybatis-generator:generate -e -->
+    <!-- 引入配置文件 -->
+    <!--<properties resource="mybatis-generator/mybatisGeneratorinit.properties"/>-->
+    <!--classPathEntry:数据库的JDBC驱动,换成你自己的驱动位置 可选 -->
+    <!--<classPathEntry location="D:\generator_mybatis\mysql-connector-java-5.1.46-bin.jar" />-->
+
+    <!-- 一个数据库一个context -->
+    <!--
+    targetRuntime可以设置成MyBatis3Simple,就不会生成example的代码和方法
+    defaultModelType="flat" 目的是每个表只是生成一个实体，没有复杂继承类比较方便 -->
+    <context id="MysqlTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；
+        一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+        <property name="autoDelimitKeywords" value="true" />
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="utf-8" />
+        <!-- beginningDelimiter和endingDelimiter：
+        指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`" />
+
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+        <!-- 注释 -->
+        <commentGenerator >
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+        </commentGenerator>
+
+        <!-- jdbc连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/aurora_db2?serverTimezone=GMT%2B8&amp;useUnicode=true&amp;characterEncoding=utf-8" userId="root" password="123456" >
+            <!--解决在一个mysql的不同数据库中存在相同表会重复生成xml-->
+            <property name="nullCatalogMeansCurrent" value="true" />
+
+        </jdbcConnection>
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="com.quinntian.aurora.site.model" targetProject="src/main/java/" >
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成map.xml文件 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" >
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        <!-- 生成mapxml对应client，也就是接口dao -->
+        <javaClientGenerator targetPackage="com.quinntian.aurora.site.mapper" targetProject="src/main/java/" type="XMLMAPPER" >
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+        <!-- table可以有多个,每个数据库中的表都可以写一个table，tableName表示要匹配的数据库表,
+        也可以在tableName属性中通过使用%通配符来匹配所有数据库表,只有匹配的表才会自动生成文件
+        以下方法参考官方文档，适当添加,添加的话改为true,http://mybatis.org/generator/configreference/table.html
+        enableInsert="false"
+        enableCountByExample="false"
+        enableUpdateByExample="true"
+        enableDeleteByExample="true"
+        enableSelectByExample="true"
+        selectByExampleQueryId="true"
+        -->
+        <table tableName="aurora_user" domainObjectName="User"
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+            >
+            <property name="useActualColumnNames" value="false" />
+            <!-- 数据库表主键 -->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+        <table tableName="aurora_site" domainObjectName="Site"
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+        >
+        </table>
+        <table tableName="aurora_article" domainObjectName="Article"
+
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+
+        >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+
+        </table>
+        <table tableName="aurora_tag" domainObjectName="Tag"
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+
+
+        >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+
+        </table>
+        <table tableName="aurora_category" domainObjectName="Categoray"
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+
+
+        >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+
+        </table>
+        <table tableName="aurora_menu" domainObjectName="Menu"
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+
+
+        >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+
+        </table>
+        <table tableName="aurora_option" domainObjectName="Option"
+               enableInsert="true"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+
+
+        >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+
+        </table>
+        <!--<table tableName="aurora_user" domainObjectName="User" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <!--&lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+            <!--&lt;!&ndash;<generatedKey column="user_id" sqlStatement="Mysql" identity="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="aurora_blog" domainObjectName="Blog" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <!--&lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+            <!--&lt;!&ndash;<generatedKey column="user_id" sqlStatement="Mysql" identity="true" />&ndash;&gt;-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quinntian.aurora.site.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.quinntian.aurora.site.model.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="user_site_id" jdbcType="BIGINT" property="userSiteId" />
+    <result column="user_display_name" jdbcType="VARCHAR" property="userDisplayName" />
+    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+    <result column="user_desc" jdbcType="VARCHAR" property="userDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    u.id, u.user_name, u.user_email, u.user_pwd, u.user_site_id, u.user_display_name, u.user_avatar,
+    u.user_desc
+  </sql>
+
+  <!--根据用户名和邮箱查询 success-->
+  <select id="selectByuUserNameAndPassword" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from aurora_user u
+    where user_name =#{userName} and user_pwd=#{password}
+  </select>
+  <!--根据用户名和密码查询 success-->
+  <select id="selectByuEmailAndPassword" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List"></include>
+    from aurora_user u
+    where user_email =#{userEmail} and user_pwd=#{password}
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from aurora_user u
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from aurora_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.quinntian.aurora.site.model.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_user (user_name, user_email, user_pwd, 
+      user_site_id, user_display_name, user_avatar, 
+      user_desc)
+    values (#{userName,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{userSiteId,jdbcType=VARCHAR}, #{userDisplayName,jdbcType=VARCHAR}, #{userAvatar,jdbcType=VARCHAR}, 
+      #{userDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.quinntian.aurora.site.model.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into aurora_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userEmail != null">
+        user_email,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="userSiteId != null">
+        user_site_id,
+      </if>
+      <if test="userDisplayName != null">
+        user_display_name,
+      </if>
+      <if test="userAvatar != null">
+        user_avatar,
+      </if>
+      <if test="userDesc != null">
+        user_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userSiteId != null">
+        #{userSiteId,jdbcType=VARCHAR},
+      </if>
+      <if test="userDisplayName != null">
+        #{userDisplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAvatar != null">
+        #{userAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="userDesc != null">
+        #{userDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quinntian.aurora.site.model.User">
+    update aurora_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userSiteId != null">
+        user_site_id = #{userSiteId,jdbcType=VARCHAR},
+      </if>
+      <if test="userDisplayName != null">
+        user_display_name = #{userDisplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAvatar != null">
+        user_avatar = #{userAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="userDesc != null">
+        user_desc = #{userDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quinntian.aurora.site.model.User">
+    update aurora_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_site_id = #{userSiteId,jdbcType=VARCHAR},
+      user_display_name = #{userDisplayName,jdbcType=VARCHAR},
+      user_avatar = #{userAvatar,jdbcType=VARCHAR},
+      user_desc = #{userDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

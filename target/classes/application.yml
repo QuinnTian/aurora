@@ -1,0 +1,46 @@
+# DataSource config
+spring:
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/aurora_db2?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    password: 123456
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+  freemarker:
+    request-context-attribute: req  #req访问request
+    suffix: .ftl  #后缀名
+    content-type: text/html
+    enabled: true
+    cache: false #缓存配置
+    template-loader-path: classpath:/templates/ #模板加载路径 按需配置
+    charset: UTF-8 #编码格式
+    settings:
+      number_format: '0.##'   #数字格式化，无小数点
+# Logger config
+logging:
+  level:
+
+    com.quinntian.admin.site: DEBUG
+    com.quinntian.admin.site.mapper : DEBUG
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations:
+    classpath: mapper/*.xml
+server:
+  port: 2020
+
+
+
+
+
+
+
+
+
