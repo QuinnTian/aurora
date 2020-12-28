@@ -17,7 +17,22 @@
 <!--  </select>-->
   <!--根据分类ID查询所有文章ID-->
   <!--修改分类-->
-
+  <!--删除级联表  -->
+  <!--根据站点和分类ID删除分类-->
+  <delete id="deleteCategoryBySiteId" parameterType="java.lang.Long">
+    delete from aurora_category
+    where id = #{categoryId,jdbcType=BIGINT} and category_site_id= #{categorySiteId,jdbcType=BIGINT}
+  </delete>
+  <!--根据分类ID删除级联表所有文章-->
+  <delete id="deleteArticleRelCategoryByCategoryId" parameterType="java.lang.Long">
+    delete from aurora_article_category
+    where  category_id = #{categoryId,jdbcType=BIGINT}
+  </delete>
+  <!--根据文章id和标签id删除级联表中的记录-->
+  <delete id="deleteArticleRelCategoryByArticleIdAndCategoryId" parameterType="java.lang.Long">
+    delete from aurora_article_category
+    where article_id = #{articleId,jdbcType=BIGINT} and category_id = #{categoryId,jdbcType=BIGINT}
+  </delete>
   <!--插入文章-分类级联表-->
   <insert id="insertArticleRelCat">
     insert aurora_article_category (article_id,category_id) values (#{articleId},#{categoryId})

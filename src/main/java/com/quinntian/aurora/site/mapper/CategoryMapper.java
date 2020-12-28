@@ -6,6 +6,9 @@ import com.quinntian.aurora.site.model.Category;
 import java.util.List;
 
 public interface CategoryMapper {
+    int deleteCategoryBySiteId(long categoryId,long categorySiteId);
+    int deleteArticleRelCategoryByCategoryId(long categoryId);
+    int deleteArticleRelCategoryByArticleIdAndCategoryId(long articleId,long categoryId);
     int insertArticleRelCat(long articleId,long categoryId);
     Category selectByCategoryNameAndSiteId(Long siteId,String cateName);
 

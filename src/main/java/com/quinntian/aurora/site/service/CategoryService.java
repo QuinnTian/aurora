@@ -11,6 +11,9 @@ import java.util.List;
  * @since
  */
 public interface CategoryService {
+    /*根据站点删除分类，同时删除级联表*/
+    void deleteCategoryBySiteId(long siteId,long categoryId);
+    void deleteArticleIdsByCategoryId(List<Long> deleteArticleIds,long categoryId);
     int updateCategoryByPk(Category category);
     void addArticleByCategory(List<Long> articleIds, long categoryId);
     Category queryById(long id);

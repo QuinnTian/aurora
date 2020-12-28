@@ -23,6 +23,21 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.selectByPrimaryKey(id);
     }
     public int addCat(Category category){return categoryMapper.insertSelective(category);}
+
+    @Override
+    public void deleteCategoryBySiteId(long siteId,long categoryId) {
+        categoryMapper.deleteCategoryBySiteId(categoryId,siteId);
+        categoryMapper.deleteArticleRelCategoryByCategoryId(categoryId);
+    }
+
+    @Override
+    public void deleteArticleIdsByCategoryId(List<Long> deleteArticleIds, long categoryId) {
+        for (long aid : deleteArticleIds){
+             categoryMapper.deleteArticleRelCategoryByArticleIdAndCategoryId(aid,categoryId);
+
+        }
+    }
+
     /*根据id分类*/
     @Override
     public int updateCategoryByPk(Category category) {

@@ -23,6 +23,20 @@ public class CategoryController {
     private CategoryService categoryService;
     @Autowired
     private ArticleService articleService;
+    /*删除站点下的分类*/
+    @PostMapping("/deleteCategory")
+    @ResponseBody
+    public void deleteCategoryBySiteId(@RequestParam("categoryId")long categoryId){
+        categoryService.deleteCategoryBySiteId(1,categoryId);
+    }
+    /*删除某个分类下的文章*/
+    @PostMapping("/deleteArticlesToCategory")
+    @ResponseBody
+    public void deleteArticleToTag(@RequestParam("categoryId") long categoryId,@RequestParam("articleIds")List<Long> deleteArticleIds){
+//        tagService.deleteArticleIdsByTagId(deleteArticleIds,tagId);
+        categoryService.deleteArticleIdsByCategoryId(deleteArticleIds,categoryId);
+    }
+    /**/
     /*修改分类*/
     @PostMapping("/updateCategory")
     @ResponseBody
@@ -53,7 +67,7 @@ public class CategoryController {
 
         List<Category> categories = categoryService.queryCateBySiteId((long) 1);
         model.addAttribute("categories",categories);
-        return "/admin/admin_cates_list";
+        return "/admin/admin_category";
     }
     /*分类管理*/
     @GetMapping("/manager")
@@ -70,7 +84,7 @@ public class CategoryController {
             model.addAttribute("articles",articleService.queryBySiteId(1));
             model.addAttribute("alreadyExistsArticles",articleService.queryBycategoryId(cateId));
         }
-        return "/admin/admin_cates_manager";
+        return "/admin/admin_category_manager";
     }
     /*新增分类下的文章*/
     @PostMapping("/addCategoryArticles")
