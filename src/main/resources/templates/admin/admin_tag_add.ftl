@@ -10,7 +10,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/static/back/plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="/static/backp/lugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="/static/back/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/static/back/dist/css/adminlte.min.css">
 </head>
@@ -246,15 +246,16 @@
           <div class="col-sm-6">
             <!-- 内容标题-->
             <h1 class="m-0" style="display: inline;">标签管理</h1>
-            <button class="btn btn-primary btn-xs" style="display: inline-block" onclick="location.href='/admin/tag/tagEdit'">新增标签</button>
+            <button class="btn btn-default btn-xs" style="display: inline-block" onclick="location.href='/admin/tag/'">返 回</button>
 
           </div><!-- /.col -->
           <!-- 右侧导航-->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active">后台</li>
-              <li class="breadcrumb-item active">文章</li>
+              <li class="breadcrumb-item"><a href="#">后台</a></li>
+              <li class="breadcrumb-item"><a href="#">文章</a></li>
               <li class="breadcrumb-item"><a href="#">标签管理</a></li>
+              <li class="breadcrumb-item active">新增标签</li>
 
             </ol>
           </div><!-- /.col -->
@@ -268,69 +269,38 @@
       <div class="container-fluid">
       <!-- 自定义内容-->
       <div class="row">
-      <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">所有标签</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th>标签名</th>
-
-                            <th style="width: 20%">操作</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <#if tags??>
-                            <#list tags as tag >
-                                  <tr>
-
-                              <td>
-                                ${tag.tagName!"null"}
-                              </td>
-                              <td>
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <button type="button" class="btn btn-block btn-info btn-xs" onclick="location.href='/admin/tag/tagEdit?type=1&tag=${tag.id!'null'}'">编辑</button>
-
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <button type="button" class="btn btn-block btn-warning btn-xs" onclick="location.href='/admin/tag/manager?type=1&tag=${tag.id!"null"}'">管理</button>
-
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <button type="button" class="btn btn-block btn-danger btn-xs">删除</button>
-
-                                  </div>
-                                </div>
-
-                              </td>
-                            </tr>
-
-                            </#list>
-                          </#if>
-
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer clearfix">
-                      <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!-- /.card -->
+      <div class="col-md-6">
+           <div class="card card-warning">
+           	                <div class="card-header">
+           	                  <h3 class="card-title">标签信息</h3>
+           	                </div>
+           	                <!-- /.card-header -->
+           	                <!-- form start -->
+           	                <form>
+           	                  <div class="card-body">
+           	                    <div class="form-group">
+           	                      <label>标签名称</label>
+           	                      <input <#if editTag??>value="${editTag.tagName!"null"}"</#if> type="text" class="form-control" id="tagName" placeholder="输入标签名称 ...">
+           	                    </div>
+           	                    <div class="form-group">
+           	                      <label>标签地址</label>
+           	                      <input <#if editTag??>value="${editTag.tagUrl!"null"}"</#if>type="text" class="form-control" id="tagUrl" placeholder="输入标签地址 ...">
+           	                    </div>
+           	                    <div class="form-group">
+           	                      <label>标签描述</label>
+           	                      <textarea class="form-control" rows="3" id="tagDesc" placeholder="输入对标签的描述 ..."><#if editTag??>${editTag.tagDesc!"null"}</#if></textarea>                  </div>
 
 
-                </div>
+           	                  </div>
+           	                  <!-- /.card-body -->
+
+           	                  <div class="card-footer">
+           	                    <button type="button" class="btn btn-primary" id="commonBtn">应用</button>
+           	                    <button type="button" class="btn btn-default" onclick="location.href='/admin/tag/'">返回</button>
+           	                  </div>
+           	                </form>
+           	              </div>
+      </div>
       </div>
       </div><!--/. container-fluid -->
     </section>
@@ -372,11 +342,43 @@
 <script src="/static/back/plugins/jquery-mapael/jquery.mapael.min.js"></script>
 <script src="/static/back/plugins/jquery-mapael/maps/usa_states.min.js"></script>
 <!-- ChartJS -->
-<script src="/static/back/plugins/chart.js/Chart.min.js"></script>
+<script src="plugins/chart.js/Chart.min.js"></script>
 
 <!-- AdminLTE for demo purposes -->
 <script src="/static/back/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/static/back/dist/js/pages/dashboard2.js"></script>
+<script>
+  $("#commonBtn").click(function () {
+    var url;
+    <#if editTag??>
+    url = "/admin/tag/updateTag";
+    var data = {
+      "id":${editTag.id!null},
+      "tagName":$("#tagName").val(),
+      "tagUrl":$("#tagUrl").val(),
+      "tagDesc":$("#tagDesc").val()
+    };
+    <#else >
+    url="/admin/tag/addTag";
+    var data = {
+
+      "tagName":$("#tagName").val(),
+      "tagUrl":$("#tagUrl").val(),
+      "tagDesc":$("#tagDesc").val()
+    };
+    </#if>
+
+    $("#articleUrl").val();
+
+    $.post(url, data,function(data,status){
+      //alert("当前有重复标签: " +  JSON.stringify(data) + "nStatus: " + status);
+      if(Object.keys(data).length!=0){
+        toastr.info('新增标签含有已存在标签,请删除后在标签列表勾选！')
+        flag = 0;
+      }
+    });
+  });
+</script>
 </body>
 </html>

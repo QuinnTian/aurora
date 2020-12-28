@@ -20,6 +20,21 @@ import java.util.List;
 public class TagServiceImpl implements TagService {
     @Autowired
     private TagMapper tagMapper;
+
+    @Override
+    public int updateTag(Tag tag) {
+        tag.setTagSiteId((long) 1);
+        return tagMapper.updateByPrimaryKeySelective(tag);
+    }
+
+    @Override
+    public void deleteArticleIdsByTagId(List<Long> articleIdList, long tagId) {
+        for (long aid : articleIdList ){
+            tagMapper.deleteArticleRelTagByArticleIdAndTagId(aid,tagId);
+
+        }
+    }
+
     /*根据标签ID插入文章*/
     public void addArticleIdListByTagId(List<Long> articleIdList,long tagId){
         for(long artId : articleIdList){

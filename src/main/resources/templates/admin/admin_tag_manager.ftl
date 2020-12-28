@@ -245,8 +245,8 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <!-- 内容标题-->
-            <h1 class="m-0" style="display: inline;">标签管理</h1>
-            <button class="btn btn-primary btn-xs" style="display: inline-block">新增标签</button>
+            <h1 class="m-0" style="display: inline;">${tag.tagName!"n"}</h1>
+            <button onclick="location.href='/admin/tag/'" class="btn btn-primary btn-xs" style="display: inline-block">返回</button>
 
           </div><!-- /.col -->
           <!-- 右侧导航-->
@@ -295,7 +295,7 @@
                   <tr>
                     <th>文章标题</th>
 
-                    <th style="width: 20%">操作</th>
+                    <th style="width: 10%">操作</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -313,18 +313,18 @@
                           </td>
                           <td>
                             <div class="row">
-                              <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-info btn-xs">编辑</button>
+                              <div class="col-sm-12">
+                                <button type="button" class="btn btn-block btn-info btn-xs">查看</button>
 
                               </div>
-                              <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-warning btn-xs">管理</button>
+                              <#--                              <div class="col-sm-4">-->
+                              <#--                                <button type="button" class="btn btn-block btn-warning btn-xs">管理</button>-->
 
-                              </div>
-                              <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-danger btn-xs">删除</button>
+                              <#--                              </div>-->
+<#--                              <div class="col-sm-4">-->
+<#--                                <button type="button" class="btn btn-block btn-danger btn-xs">删除</button>-->
 
-                              </div>
+<#--                              </div>-->
                             </div>
 
                           </td>
@@ -348,18 +348,18 @@
                           </td>
                           <td>
                             <div class="row">
-                              <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-info btn-xs">编辑</button>
+                              <div class="col-sm-12">
+                                <button type="button" class="btn btn-block btn-info btn-xs">查看</button>
 
                               </div>
-                              <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-warning btn-xs">管理</button>
+<#--                              <div class="col-sm-4">-->
+<#--                                <button type="button" class="btn btn-block btn-warning btn-xs">管理</button>-->
 
-                              </div>
-                              <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-danger btn-xs">删除</button>
+<#--                              </div>-->
+<#--                              <div class="col-sm-4">-->
+<#--                                <button type="button" class="btn btn-block btn-danger btn-xs">删除</button>-->
 
-                              </div>
+<#--                              </div>-->
                             </div>
 
                           </td>
@@ -445,10 +445,11 @@
   //var i = nowhref.indexOf();
   var type1 = "manager?type=1";
   var type2 = "manager?type=2";
+  // alert(nowhref)
   if (nowhref.indexOf(type2)!=-1){
     $('#opt2').attr("selected","selected");
 
-    $('#commonbtn').text("新增标签");
+    $('#commonbtn').text("新增文章");
     $("#commonbtn").click(function () {
       // alert()
       var newTagIds  = new Array();
@@ -469,7 +470,31 @@
       });
       // alert(newArticleIds)
     });
+  }else if(nowhref.indexOf(type1)!=-1){
+
+    $("#commonbtn").click(function () {
+
+      var newTagIds  = new Array();
+      // $(".custom-control-input new-category:checked").each(function () {
+      //   newArticleIds.push($(this).val());
+      // });
+      $(".custom-control-input:enabled:checked").each(function () {
+        console.log($(this).val());
+        newTagIds.push($(this).val());
+
+      });
+      $.post("/admin/tag/deleteArticlesToTag", { "articleIds":newTagIds.toString(),"tagId":${tag.id!"null"}},function(data,status){
+        //alert("当前有重复标签: " +  JSON.stringify(data) + "nStatus: " + status);
+        if(Object.keys(data).length!=0){
+          toastr.info('新增标签含有已存在标签,请删除后在标签列表勾选！')
+          flag = 0;
+        }
+      });
+      // alert(newArticleIds)
+    });
+
   }
+
 
   $('#myselect').change(function () {
     var type = $(this).children('option:selected').val();

@@ -11,7 +11,11 @@
   <sql id="Base_Column_List">
     t.id, t.tag_name, t.tag_url, t.tag_desc,tag_site_id
   </sql>
-  <!---->
+  <!--根据文章id和标签id删除级联表中的记录-->
+  <delete id="deleteArticleRelTagByArticleIdAndTagId" parameterType="java.lang.Long">
+    delete from aurora_article_tag
+    where article_id = #{articleId,jdbcType=BIGINT} and tag_id = #{tagId,jdbcType=BIGINT}
+  </delete>
   <!--插入文章-标签级联表-->
   <insert id="insertArticleRelTag">
     insert aurora_article_tag(tag_id,article_id) VALUES(#{tagId},#{articleId})

@@ -11,6 +11,8 @@ import java.util.List;
  * @since
  */
 public interface TagService {
+    int updateTag(Tag tag);
+    void deleteArticleIdsByTagId(List<Long> articleIdList,long tagId);
     void addArticleIdListByTagId(List<Long> articleIdList,long tagId);
     Tag queryByTagId(long tagId);
     int addTag(Tag tag);

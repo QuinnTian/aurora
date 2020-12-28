@@ -246,7 +246,7 @@
           <div class="col-sm-6">
             <!-- 内容标题-->
             <h1 class="m-0" style="display: inline;">标签管理</h1>
-            <button class="btn btn-primary btn-xs" style="display: inline-block">新增标签</button>
+            <button class="btn btn-primary btn-xs" style="display: inline-block" onclick="location.href='/admin/tag/tagEdit'">新增标签</button>
 
           </div><!-- /.col -->
           <!-- 右侧导航-->
@@ -294,11 +294,11 @@
                               <td>
                                 <div class="row">
                                   <div class="col-sm-4">
-                                    <button type="button" class="btn btn-block btn-info btn-xs" onclick="location.href='/admin/tag/'">编辑</button>
+                                    <button type="button" class="btn btn-block btn-info btn-xs" onclick="location.href='/admin/tag/tagEdit?type=1&tag=${tag.id!'null'}'">编辑</button>
 
                                   </div>
                                   <div class="col-sm-4">
-                                    <button type="button" class="btn btn-block btn-warning btn-xs" onclick="location.href='/admin/tag/'">管理</button>
+                                    <button type="button" class="btn btn-block btn-warning btn-xs" onclick="location.href='/admin/tag/manager?type=1&tag=${tag.id!"null"}'">管理</button>
 
                                   </div>
                                   <div class="col-sm-4">
