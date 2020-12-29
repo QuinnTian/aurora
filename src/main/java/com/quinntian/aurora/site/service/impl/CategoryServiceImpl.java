@@ -24,6 +24,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
     public int addCat(Category category){return categoryMapper.insertSelective(category);}
 
+
+    @Override
+    public int deleteArticleRelCategoryByArticleId(long articleId) {
+        return categoryMapper.deleteArticleRelCategoryByArticleId(articleId);
+    }
+
     @Override
     public void deleteCategoryBySiteId(long siteId,long categoryId) {
         categoryMapper.deleteCategoryBySiteId(categoryId,siteId);

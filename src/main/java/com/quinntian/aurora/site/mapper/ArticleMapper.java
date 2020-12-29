@@ -5,6 +5,7 @@ import com.quinntian.aurora.site.model.Article;
 import java.util.List;
 
 public interface ArticleMapper {
+    Article selectOneRelCategoryAndTagByArticleId(long articleId);
     List<Long> selectIdByTagId(long tagId);
     List<Long> selectIdByCateId(long cateId);
     List<Article> selectWithTagAndCateByUrl(String url);

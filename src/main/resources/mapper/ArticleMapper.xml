@@ -40,6 +40,13 @@
   <sql id="Blob_Column_List">
     a.article_content, a.article_content_md
   </sql>
+  <select id="selectOneRelCategoryAndTagByArticleId" resultMap="ArticleAndTagAndCateBlob" >
+    select
+    <include refid="Base_Column_List"/>,
+    <include refid="Blob_Column_List"/>
+    from aurora_article a
+    where a.id = #{articleId}
+  </select>
   <!--根据标签ID查询级联表中的文章-->
   <select id="selectIdByTagId" resultType="Long">
     select article_id

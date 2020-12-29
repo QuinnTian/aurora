@@ -19,5 +19,5 @@ public interface TagService {
     int addArticleRelTag(List<Long> tId,long artId);
     List<Tag> validateRepeatTags(List<String> tagName,Long siteId);
     List<Tag> queryTagBySiteId(Long siteId);
-
+    int deleteArticleRelTagByArticleId(Long id);
 }

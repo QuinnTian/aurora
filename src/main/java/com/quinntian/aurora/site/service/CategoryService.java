@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface CategoryService {
     /*根据站点删除分类，同时删除级联表*/
+    int deleteArticleRelCategoryByArticleId(long articleId);
     void deleteCategoryBySiteId(long siteId,long categoryId);
     void deleteArticleIdsByCategoryId(List<Long> deleteArticleIds,long categoryId);
     int updateCategoryByPk(Category category);

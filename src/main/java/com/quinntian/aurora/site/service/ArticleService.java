@@ -12,6 +12,8 @@ import java.util.List;
  * @since
  */
 public interface ArticleService {
+    int modifyArticleByArticleId(Article article);
+    Article queryOneRelCategoryAndTagByArticleId(long articleId);
     List<Article> queryByTagId(Long tagId);
     List<Article> queryBySiteId(long siteId);
     List<Article>queryBycategoryId(Long cateId);
@@ -19,4 +21,6 @@ public interface ArticleService {
     List<Article> queryArticleWithTagAndCateByUrl(String url);
     List<Article> queryArticleBySiteId(Long siteId);
     List<Article> queryArticleWithTagAndCateBySiteId(Long siteId);
+
+
 }

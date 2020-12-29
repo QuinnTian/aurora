@@ -1,6 +1,8 @@
 package com.quinntian.aurora.site.service.impl;
 
 import com.quinntian.aurora.site.mapper.ArticleMapper;
+import com.quinntian.aurora.site.mapper.CategoryMapper;
+import com.quinntian.aurora.site.mapper.TagMapper;
 import com.quinntian.aurora.site.model.Article;
 import com.quinntian.aurora.site.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,22 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
+    @Autowired
+    private TagMapper tagMapper;
+
+    @Override
+    public int modifyArticleByArticleId(Article article) {
+        return articleMapper.updateByPrimaryKeyWithBLOBs(article);
+    }
+
+    @Override
+    public Article queryOneRelCategoryAndTagByArticleId(long articleId) {
+        return articleMapper.selectOneRelCategoryAndTagByArticleId(articleId);
+
+    }
+
     /*根据标签ID查询全部文章*/
     public List<Article> queryByTagId(Long tagId){
         List<Long> tagIds = articleMapper.selectIdByTagId(tagId);

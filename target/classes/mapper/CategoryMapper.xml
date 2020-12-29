@@ -18,6 +18,11 @@
   <!--根据分类ID查询所有文章ID-->
   <!--修改分类-->
   <!--删除级联表  -->
+  <!--根据文章ID删除所有级联表中的分类-->
+  <delete id="deleteArticleRelCategoryByArticleId" parameterType="java.lang.Long">
+    delete from aurora_article_category
+    where article_id = #{articleId,jdbcType=BIGINT}
+  </delete>
   <!--根据站点和分类ID删除分类-->
   <delete id="deleteCategoryBySiteId" parameterType="java.lang.Long">
     delete from aurora_category

@@ -78,4 +78,9 @@ public class TagServiceImpl implements TagService {
     public List<Tag> queryTagBySiteId(Long siteId) {
         return tagMapper.selectBySiteId(siteId);
     }
+
+    @Override
+    public int deleteArticleRelTagByArticleId(Long id) {
+        return tagMapper.deleteArticleRelTagByArticleId(id) ;
+    }
 }
